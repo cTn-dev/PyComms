@@ -1,11 +1,8 @@
 PyComms is a simple wrapper class written around the smbus i2c python extension.
 
-I am personally trying to port a few sensor classes from arduino to python, because using i2c sensors became
-very popular on the Raspberry Pi platform, but there is no "pure python" implementation for any of the common i2c
-sensors like MPU6050, HMC5883L and many others, thats what this repo is for.
+I am personally trying to port a few sensor classes from arduino to python, because using i2c sensors became very popular on the Raspberry Pi platform, but there is no "pure python" implementation for any of the common i2c sensors like MPU6050, HMC5883L and many others, thats what this repo is for.
 
 Please bear in mind that some of the classes aren't fully ported (yet), so there might be bugs.
-Feel free to fork & modify the code in any way you see fit, if you extended support of any sensor class, please
-make a pull request so your changes will be distributed to others.
+Feel free to fork & modify the code in any way you see fit, if you extended support of any sensor class, please make a pull request so your changes will be distributed to others.
 
 Thank you
