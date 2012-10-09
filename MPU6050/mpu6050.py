@@ -588,137 +588,632 @@ class MPU6050:
         self.i2c = PyComms(address)
         self.address = address
         
-        # disable sleep mode
+    def initialize(self):
+        self.setClockSource(self.MPU6050_CLOCK_PLL_XGYRO)
+        self.setFullScaleGyroRange(self.MPU6050_GYRO_FS_250)
+        self.setFullScaleAccelRange(self.MPU6050_ACCEL_FS_2)   
         self.setSleepEnabled(False)
-     
+        
+    def testConnection(self):
+        return self.getDeviceID() == 0x34
+    
+    def getAuxVDDIOLevel(self):
+        result = self.i2c.readBit(self.MPU6050_RA_YG_OFFS_TC, self.MPU6050_TC_PWR_MODE_BIT)
+        return result
+        
+    def setAuxVDDIOLevel(self, value):
+        pass
+      
     def readAccelOffsetX(self):
         result = self.i2c.readS16(self.MPU6050_RA_XA_OFFS_H)
         return result
     
-    def setAccelOffsetX(self, value):
-        self.i2c.write8(self.MPU6050_RA_XA_OFFS_H, value >> 8)
-        self.i2c.write8(self.MPU6050_RA_XA_OFFS_L_TC, value & 0xFF) 
-        return True   
+    def getRate(self):
+        pass
+        
+    def setRate(self, value):
+        self.i2c.write8(self.MPU6050_RA_SMPLRT_DIV, value)
+    
+    def getExternalFrameSync(self):
+        pass
 
-    def readAccelOffsetY(self):
-        result = self.i2c.readS16(self.MPU6050_RA_YA_OFFS_H)
+    def setExternalFrameSync(self, sync):
+        self.i2c.writeBits(self.MPU6050_RA_CONFIG, self.MPU6050_CFG_EXT_SYNC_SET_BIT, self.MPU6050_CFG_EXT_SYNC_SET_LENGTH, sync)
+    
+    def getDLPFMode(self):
+        pass
+        
+    def setDLPFMode(self, mode):
+        self.i2c.writeBits(self.MPU6050_RA_CONFIG, self.MPU6050_CFG_DLPF_CFG_BIT, self.MPU6050_CFG_DLPF_CFG_LENGTH, mode)
+     
+    def getFullScaleGyroRange(self):
+        pass
+
+    def setFullScaleGyroRange(self, range):
+        self.i2c.writeBits(self.MPU6050_RA_GYRO_CONFIG, self.MPU6050_GCONFIG_FS_SEL_BIT, self.MPU6050_GCONFIG_FS_SEL_LENGTH, range)        
+    
+    def getAccelXSelfTest(self):
+        pass
+
+    def setAccelXSelfTest(self, value):
+        pass
+
+    def getAccelYSelfTest(self):
+        pass
+        
+    def setAccelYSelfTest(self, value):
+        pass
+
+    def getAccelZSelfTest(self):
+        pass
+    
+    def setAccelZSelfTest(self, value):
+        pass
+
+    def getFullScaleAccelRange(self):
+        pass
+        
+    def setFullScaleAccelRange(self, value):
+        self.i2c.writeBits(self.MPU6050_RA_ACCEL_CONFIG, self.MPU6050_ACONFIG_AFS_SEL_BIT, self.MPU6050_ACONFIG_AFS_SEL_LENGTH, value)
+            
+    def getDHPFMode(self):
+        pass
+
+    def setDHPFMode(self, value):
+        pass
+
+    def getFreefallDetectionThreshold(self):
+        pass
+        
+    def setFreefallDetectionThreshold(self):
+        pass
+
+    def getFreefallDetectionDuration(self):
+        pass
+
+    def setFreefallDetectionDuration(self):
+        pass
+    
+    def getMotionDetectionThreshold(self):
+        pass
+        
+    def setMotionDetectionThreshold(self, treshold):
+        self.i2c.write8(self.MPU6050_RA_MOT_THR, treshold)    
+
+    def getMotionDetectionDuration(self):
+        pass
+
+    def setMotionDetectionDuration(self, duration):
+        self.i2c.write8(self.MPU6050_RA_MOT_DUR, duration)
+
+    def getZeroMotionDetectionThreshold(self):
+        pass
+
+    def setZeroMotionDetectionThreshold(self, treshold):
+        self.i2c.write8(self.MPU6050_RA_ZRMOT_THR, treshold)
+
+    def getZeroMotionDetectionDuration(self):
+        pass
+
+    def setZeroMotionDetectionDuration(self, duration):
+        self.i2c.write8(self.MPU6050_RA_ZRMOT_DUR, duration)
+        
+    def getTempFIFOEnabled(self):
+        pass
+        
+    def setTempFIFOEnabled(self, value):
+        pass
+        
+    def getXGyroFIFOEnabled(self):
+        pass
+        
+    def setXGyroFIFOEnabled(self, value):
+        pass
+        
+    def getYGyroFIFOEnabled(self):
+        pass
+        
+    def setYGyroFIFOEnabled(self, value):
+        pass
+        
+    def getZGyroFIFOEnabled(self):
+        pass
+        
+    def setZGyroFIFOEnabled(self, value):
+        pass
+        
+    def getAccelFIFOEnabled(self):
+        pass
+        
+    def setAccelFIFOEnabled(self, value):
+        pass
+        
+    def getSlave2FIFOEnabled(self):
+        pass
+        
+    def setSlave2FIFOEnabled(self, value):
+        pass
+        
+    def getSlave1FIFOEnabled(self):
+        pass
+        
+    def setSlave1FIFOEnabled(self, value):
+        pass
+        
+    def getSlave0FIFOEnabled(self):
+        pass
+        
+    def setSlave0FIFOEnabled(self, value):
+        pass
+        
+    def getMultiMasterEnabled(self):
+        pass
+        
+    def setMultiMasterEnabled(self, value):
+        pass
+        
+    def getWaitForExternalSensorEnabled(self):
+        pass
+        
+    def setWaitForExternalSensorEnabled(self, value):
+        pass
+        
+    def getSlave3FIFOEnabled(self):
+        pass
+        
+    def setSlave3FIFOEnabled(self, value):    
+        pass
+        
+    def getSlaveReadWriteTransitionEnabled(self):
+        pass
+        
+    def setSlaveReadWriteTransitionEnabled(self, value):
+        pass
+        
+    def getMasterClockSpeed(self):
+        pass
+        
+    def setMasterClockSpeed(self, value):
+        pass
+        
+    def getSlaveAddress(self, value):
+        pass
+        
+    def setSlaveAddress(self, num, address):
+        self.i2c.write8(self.MPU6050_RA_I2C_SLV0_ADDR + num * 3, address)        
+        
+    def getSlaveRegister(self, value):
+        pass
+        
+    def setSlaveRegister(self, num, reg):
+        pass
+        
+    def getSlaveEnabled(self, num):
+        pass
+        
+    def setSlaveEnabled(self, num, value):
+        pass
+        
+    def getSlaveWordByteSwap(self, num):
+        pass
+        
+    def setSlaveWordByteSwap(self, num, value):
+        pass
+        
+    def getSlaveWriteMode(self, num):
+        pass
+        
+    def setSlaveWriteMode(self, num, value):
+        pass
+        
+    def getSlaveWordGroupOffset(self, num):
+        pass
+        
+    def setSlaveWordGroupOffset(self, num, value):
+        pass
+        
+    def getSlaveDataLength(self, num):
+        pass
+        
+    def setSlaveDataLength(self, num, length):
+        pass
+        
+    def getSlave4Address(self):
+        pass
+        
+    def setSlave4Address(self, address):
+        pass
+        
+    def getSlave4Register(self):
+        pass
+        
+    def setSlave4Register(self, reg):
+        pass
+        
+    def setSlave4OutputByte(self, data):
+        pass
+        
+    def getSlave4Enabled(self):
+        pass
+        
+    def setSlave4Enabled(self, enabled):
+        pass
+        
+    def getSlave4InterruptEnabled(self):
+        pass
+        
+    def setSlave4InterruptEnabled(self, enabled):
+        pass
+        
+    def getSlave4WriteMode(self):
+        pass
+        
+    def setSlave4WriteMode(self, mode):
+        pass
+        
+    def getSlave4MasterDelay(self):
+        pass
+        
+    def setSlave4MasterDelay(self, delay):
+        pass
+        
+    def getSlate4InputByte(self):
+        pass
+        
+    def getPassthroughStatus(self):
+        pass
+        
+    def getSlave4IsDone(self):
+        pass
+        
+    def getLostArbitration(self):
+        pass
+        
+    def getSlave4Nack(self):
+        pass
+        
+    def getSlave3Nack(self):
+        pass
+        
+    def getSlave2Nack(self):
+        pass
+        
+    def getSlave1Nack(self):
+        pass
+        
+    def getSlave0Nack(self):
+        pass
+        
+    def getInterruptMode(self):
+        pass
+        
+    def setInterruptMode(self, mode):
+        pass
+        
+    def getInterruptDrive(self):
+        pass
+        
+    def setInterruptDrive(self):
+        pass
+        
+    def getInterruptLatch(self):
+        pass
+
+    def setInterruptLatch(self, latch):
+        pass
+
+    def getInterruptLatchClear(self):
+        pass
+    
+    def setInterruptLatchClear(self, clear):
+        pass
+
+    def getFSyncInterruptLevel(self):
+        pass
+
+    def setFSyncInterruptLevel(self, level):
+        pass
+
+    def getFSyncInterruptEnabled(self):
+        pass
+
+    def setFSyncInterruptEnabled(self, enabled):
+        pass
+
+    def getI2CBypassEnabled(self):
+        pass
+
+    def setI2CBypassEnabled(self, status):
+        self.i2c.writeBit(self.MPU6050_RA_INT_PIN_CFG, self.MPU6050_INTCFG_I2C_BYPASS_EN_BIT, status)
+
+    def getClockOutputEnabled(self):
+        pass
+
+    def setClockOutputEnabled(self, enabled):
+        pass
+
+    def getIntEnabled(self):
+        pass
+
+    def setIntEnabled(self, status):
+        self.i2c.write8(self.MPU6050_RA_INT_ENABLE, status)        
+        
+    def getIntFreefallEnabled(self):
+        pass
+        
+    def setIntFreefallEnabled(self, enabled):
+        pass
+        
+    def getIntMotionEnabled(self):
+        pass
+        
+    def setIntMotionEnabled(self, enabled):
+        pass
+        
+    def getIntZeroMotionEnabled(self):
+        pass
+        
+    def setIntZeroMotionEnabled(self, enabled):
+        pass
+        
+    def getIntFIFOBufferOverflowEnabled(self):
+        pass
+        
+    def setIntFIFOBufferOverflowEnabled(self, enabled):
+        pass
+        
+    def getIntI2CMasterEnabled(self):
+        pass
+        
+    def setIntI2CMasterEnabled(self, enabled):
+        pass
+        
+    def getIntDataReadyEnabled(self):
+        pass
+        
+    def setIntDataReadyEnabled(self, enabled):
+        pass
+
+    def getIntStatus(self):
+        result = self.i2c.readU8(self.MPU6050_RA_INT_STATUS)
         return result
 
-    def setAccelOffsetY(self, value):
-        self.i2c.write8(self.MPU6050_RA_YA_OFFS_H, value >> 8)
-        self.i2c.write8(self.MPU6050_RA_YA_OFFS_L_TC, value & 0xFF) 
-        return True        
-        
-    def readAccelOffsetZ(self):
-        result = self.i2c.readS16(self.MPU6050_RA_ZA_OFFS_H)
-        return result
+    def getIntFreefallStatus(self):
+        pass
 
-    def setAccelOffsetZ(self, value):
-        self.i2c.write8(self.MPU6050_RA_ZA_OFFS_H, value >> 8)
-        self.i2c.write8(self.MPU6050_RA_ZA_OFFS_L_TC, value & 0xFF) 
-        return True    
-    
-    def readGyroOffsetX(self):
-        result = self.i2c.readS16(self.MPU6050_RA_XG_OFFS_USRH)
-        return result        
-    
-    def setXGyroOffset(self, offset):
-        self.i2c.writeBits(self.MPU6050_RA_XG_OFFS_TC, self.MPU6050_TC_OFFSET_BIT, self.MPU6050_TC_OFFSET_LENGTH, offset)
-    
-    def setXGyroOffsetUser(self, value):
-        self.i2c.write8(self.MPU6050_RA_XG_OFFS_USRH, value >> 8)
-        self.i2c.write8(self.MPU6050_RA_XG_OFFS_USRL, value & 0xFF) 
-        return True
-        
-    def readGyroOffsetY(self):
-        result = self.i2c.readS16(self.MPU6050_RA_YG_OFFS_USRH)
-        return result        
+    def getIntMotionStatus(self):
+        pass
 
-    def setYGyroOffset(self, offset):
-        self.i2c.writeBits(self.MPU6050_RA_YG_OFFS_TC, self.MPU6050_TC_OFFSET_BIT, self.MPU6050_TC_OFFSET_LENGTH, offset)
-        
-    def setYGyroOffsetUser(self, value):
-        self.i2c.write8(self.MPU6050_RA_YG_OFFS_USRH, value >> 8)
-        self.i2c.write8(self.MPU6050_RA_YG_OFFS_USRL, value & 0xFF) 
-        return True
-        
-    def readGyroOffsetZ(self):
-        result = self.i2c.readS16(self.MPU6050_RA_ZG_OFFS_USRH)
-        return result        
+    def getIntZeroMotionStatus(self):
+        pass
 
-    def setZGyroOffset(self, offset):
-        self.i2c.writeBits(self.MPU6050_RA_ZG_OFFS_TC, self.MPU6050_TC_OFFSET_BIT, self.MPU6050_TC_OFFSET_LENGTH, offset)
+    def getIntFIFOBufferOverflowStatus(self):
+        pass
+
+    def getIntI2CMasterStatus(self):
+        pass
+
+    def getIntDataReadyStatus(self):
+        pass
+
+    def getMotion9(self):
+        pass
+
+    def getMotion6(self):
+        pass
+
+    def getAcceleration(self):
+        pass
         
-    def setZGyroOffsetUser(self, value):
-        self.i2c.write8(self.MPU6050_RA_ZG_OFFS_USRH, value >> 8)
-        self.i2c.write8(self.MPU6050_RA_ZG_OFFS_USRL, value & 0xFF) 
-        return True
+    def getAccelerationX(self):
+        pass
         
-    def readTemperature(self):
-        # The temperature sensor is -40 to +85 degrees Celsius.
-        # It is a signed integer.
-        # According to the datasheet: 
-        #   340 per degrees Celsius, -512 at 35 degrees.
-        #   At 0 degrees: -512 - (340 * 35) = -12412    
-        result = self.i2c.readS16(self.MPU6050_RA_TEMP_OUT_H)
-        result = (result + 12412) / 340
+    def getAccelerationY(self):
+        pass
         
-        return result
+    def getAccelerationZ(self):
+        pass
         
-    def readGyro(self):
-        x = self.i2c.readS16(self.MPU6050_RA_GYRO_XOUT_H)
-        y = self.i2c.readS16(self.MPU6050_RA_GYRO_YOUT_H)
-        z = self.i2c.readS16(self.MPU6050_RA_GYRO_ZOUT_H)
+    def getTemperature(self):
+        pass
         
-        return x, y, z
+    def getRotation(self):
+        pass
         
-    def readAccel(self):
-        x = self.i2c.readS16(self.MPU6050_RA_ACCEL_XOUT_H)
-        y = self.i2c.readS16(self.MPU6050_RA_ACCEL_YOUT_H)
-        z = self.i2c.readS16(self.MPU6050_RA_ACCEL_ZOUT_H)
+    def getRotationX(self):
+        pass
         
-        return x, y, z
+    def getRotationY(self):
+        pass
+     
+    def getRotationZ(self):
+        pass
+      
+    def getExternalSensorByte(self, position):
+        pass
+
+    def getExternalSensorWord(self, position):
+        pass
+
+    def getExternalSensorDWord(self, position):
+        pass
+
+    def getXNegMotionDetected(self):
+        pass
+
+    def getXPosMotionDetected(self):
+        pass
+
+    def getYNegMotionDetected(self):
+        pass
+
+    def getYPosMotionDetected(self):
+        pass
+
+    def getZNegMotionDetected(self):
+        pass
     
+    def getZPosMotionDetected(self):
+        pass
+
+    def getZeroMotionDetected(self):
+        pass
+
+    def setSlaveOutputByte(self, num, data):
+        pass
+
+    def getExternalShadowDelayEnabled(self):
+        pass
+
+    def setExternalShadowDelayEnabled(self, enabled):
+        pass
+      
+    def getSlaveDelayEnabled(self, num):
+        pass
+        
+    def setSlaveDelayEnabled(self, num, enabled):
+        pass
+        
+    def resetGyroscopePath(self):
+        pass
+        
+    def resetAccelerometerPath(self):
+        pass
+        
+    def resetTemperaturePath(self):
+        pass
+        
+    def getAccelerometerPowerOnDelay(self):
+        pass
+        
+    def setAccelerometerPowerOnDelay(self, delay):
+        pass
+        
+    def getFreefallDetectionCounterDecrement(self):
+        pass
+        
+    def setFreefallDetectionCounterDecrement(self, decrement):
+        pass
+        
+    def getMotionDetectionCounterDecrement(self):
+        pass
+        
+    def setMotionDetectionCounterDecrement(self, decrement):
+        pass
+        
+    def getFIFOEnabled(self):
+        pass
+         
+    def setFIFOEnabled(self, status):
+        self.i2c.writeBit(self.MPU6050_RA_USER_CTRL, self.MPU6050_USERCTRL_FIFO_EN_BIT, status)        
+        
+    def getI2CMasterModeEnabled(self):
+        pass
+        
+    def setI2CMasterModeEnabled(self, status):
+        self.i2c.writeBit(self.MPU6050_RA_USER_CTRL, self.MPU6050_USERCTRL_I2C_MST_EN_BIT, status)        
+        
+    def switchSPIEnabled(self, enabled):
+        pass
+        
+    def resetFIFO(self):
+        self.i2c.writeBit(self.MPU6050_RA_USER_CTRL, self.MPU6050_USERCTRL_FIFO_RESET_BIT, True)           
+        
+    def resetI2CMaster(self):
+        self.i2c.writeBit(self.MPU6050_RA_USER_CTRL, self.MPU6050_USERCTRL_I2C_MST_RESET_BIT, True)        
+        
+    def resetSensors(self):
+        pass
+        
     def reset(self):
-        self.i2c.writeBit(self.MPU6050_RA_PWR_MGMT_1, self.MPU6050_PWR1_DEVICE_RESET_BIT, True)
-    
+        self.i2c.writeBit(self.MPU6050_RA_PWR_MGMT_1, self.MPU6050_PWR1_DEVICE_RESET_BIT, True)       
+        
     def getSleepEnabled(self):
         return self.i2c.readBit(self.MPU6050_RA_PWR_MGMT_1, self.MPU6050_PWR1_SLEEP_BIT)
     
     def setSleepEnabled(self, status):
-        self.i2c.writeBit(self.MPU6050_RA_PWR_MGMT_1, self.MPU6050_PWR1_SLEEP_BIT, status)
-    
-    def setIntEnabled(self, status):
-        self.i2c.write8(self.MPU6050_RA_INT_ENABLE, status)
-    
-    def setRate(self, rate):
-        self.i2c.write8(self.MPU6050_RA_SMPLRT_DIV, rate)
-    
-    def setExternalFrameSync(self, sync):
-        self.i2c.writeBits(self.MPU6050_RA_CONFIG, self.MPU6050_CFG_EXT_SYNC_SET_BIT, self.MPU6050_CFG_EXT_SYNC_SET_LENGTH, sync)
-    
-    def writeBytes(self, regAddr, length, data):
-        i = 0
-        while i < length:
-            i += 1
-            
-            self.i2c.write8(regAddr, data[i])
-        return True    
-    
-    def setClockSource(self, source):
-        self.i2c.writeBits(self.MPU6050_RA_PWR_MGMT_1, self.MPU6050_PWR1_CLKSEL_BIT, self.MPU6050_PWR1_CLKSEL_LENGTH, source)
-    
-    def setDLPFMode(self, mode):
-        self.i2c.writeBits(self.MPU6050_RA_CONFIG, self.MPU6050_CFG_DLPF_CFG_BIT, self.MPU6050_CFG_DLPF_CFG_LENGTH, mode)
-    
-    def setFullScaleGyroRange(self, range):
-        self.i2c.writeBits(self.MPU6050_RA_GYRO_CONFIG, self.MPU6050_GCONFIG_FS_SEL_BIT, self.MPU6050_GCONFIG_FS_SEL_LENGTH, range)
-    
-    def setDMPConfig1(self, config):
-        self.i2c.write8(self.MPU6050_RA_DMP_CFG_1, config)
+        self.i2c.writeBit(self.MPU6050_RA_PWR_MGMT_1, self.MPU6050_PWR1_SLEEP_BIT, status)        
         
-    def setDMPConfig2(self, config):
-        self.i2c.write8(self.MPU6050_RA_DMP_CFG_2, config)
+    def getWakeCycleEnabled(self):
+        pass
+        
+    def setWakeCycleEnabled(self, enabled):
+        pass
+        
+    def getTempSensorEnabled(self):
+        pass
+        
+    def setTempSensorEnabled(self, enabled):
+        pass
+        
+    def getClockSource(self):
+        pass
+        
+    def setClockSource(self, source):
+        self.i2c.writeBits(self.MPU6050_RA_PWR_MGMT_1, self.MPU6050_PWR1_CLKSEL_BIT, self.MPU6050_PWR1_CLKSEL_LENGTH, source)        
+        
+    def getWakeFrequency(self):
+        pass
+        
+    def setWakeFrequency(self):
+        pass
+        
+    def getStandbyXAccelEnabled(self):
+        pass
+        
+    def setStandbyXAccelEnabled(self, enabled):
+        pass
+        
+    def getStandbyYAccelEnabled(self):
+        pass
+        
+    def setStandbyYAccelEnabled(self, enabled):  
+        pass
+        
+    def getStandbyZAccelEnabled(self):    
+        pass
+        
+    def setStandbyZAccelEnabled(self, enabled):
+        pass
+        
+    def getStandbyXGyroEnabled(self):
+        pass
+
+    def setStandbyXGyroEnabled(self, enabled):
+        pass
+
+    def getStandbyYGyroEnabled(self):
+        pass
+
+    def setStandbyYGyroEnabled(self, enabled):
+        pass
+
+    def getStandbyZGyroEnabled(self):
+        pass
+
+    def setStandbyZGyroEnabled(self, enabled):
+        pass
+
+    def getFIFOCount(self):
+        result = self.i2c.readU16(self.MPU6050_RA_FIFO_COUNTH)
+        return result
+
+    def getFIFOByte(self):
+        pass
+    
+    def getFIFOBytes(self,length):
+        result = self.i2c.readBytes(self.MPU6050_RA_FIFO_R_W, length)
+        return result
+
+    def setFIFOByte(self, data):
+        pass
+
+    def getDeviceID(self):
+        result = self.i2c.readBits(self.MPU6050_RA_WHO_AM_I, self.MPU6050_WHO_AM_I_BIT, self.MPU6050_WHO_AM_I_LENGTH)
+        return result
+
+    def setDeviceID(self, id):
+        pass
 
     def getOTPBankValid(self):
         result = self.i2c.readBit(self.MPU6050_RA_XG_OFFS_TC, self.MPU6050_TC_OTP_BNK_VLD_BIT)
@@ -726,63 +1221,131 @@ class MPU6050:
         
     def setOTPBankValid(self, status):
         self.i2c.writeBit(self.MPU6050_RA_XG_OFFS_TC, self.MPU6050_TC_OTP_BNK_VLD_BIT, status)
-    
-    def setSlaveAddress(self, num, address):
-        self.i2c.write8(self.MPU6050_RA_I2C_SLV0_ADDR + num * 3, address)
-    
-    def setI2CMasterModeEnabled(self, status):
-        self.i2c.writeBit(self.MPU6050_RA_USER_CTRL, self.MPU6050_USERCTRL_I2C_MST_EN_BIT, status)
-    
-    def resetFIFO(self):
-        self.i2c.writeBit(self.MPU6050_RA_USER_CTRL, self.MPU6050_USERCTRL_FIFO_RESET_BIT, True)
-    
-    def setMotionDetectionThreshold(self, treshold):
-        self.i2c.write8(self.MPU6050_RA_MOT_THR, treshold)
-    
-    def setZeroMotionDetectionThreshold(self, treshold):
-        self.i2c.write8(self.MPU6050_RA_ZRMOT_THR, treshold)
-    
-    def setMotionDetectionDuration(self, duration):
-        self.i2c.write8(self.MPU6050_RA_MOT_DUR, duration)
-    
-    def setZeroMotionDetectionDuration(self, duration):
-        self.i2c.write8(self.MPU6050_RA_ZRMOT_DUR, duration)
-    
-    def setFIFOEnabled(self, status):
-        self.i2c.writeBit(self.MPU6050_RA_USER_CTRL, self.MPU6050_USERCTRL_FIFO_EN_BIT, status)
-    
-    def getFIFOCount(self):
-        result = self.i2c.readU16(self.MPU6050_RA_FIFO_COUNTH)
-        return result
 
-    def getFIFOBytes(self,length):
-        result = self.i2c.readBytes(self.MPU6050_RA_FIFO_R_W, length)
-        return result
+    def getXGyroOffset(self):
+        pass
+    
+    def setXGyroOffset(self, offset):
+        self.i2c.writeBits(self.MPU6050_RA_XG_OFFS_TC, self.MPU6050_TC_OFFSET_BIT, self.MPU6050_TC_OFFSET_LENGTH, offset)
+
+    def getYGyroOffset(self):
+        pass
+    
+    def setYGyroOffset(self, offset):
+        self.i2c.writeBits(self.MPU6050_RA_YG_OFFS_TC, self.MPU6050_TC_OFFSET_BIT, self.MPU6050_TC_OFFSET_LENGTH, offset)
+
+    def getZGyroOffset(self):
+        pass
         
-    def readMemoryByte(self):
-        result = self.i2c.readU8(self.MPU6050_RA_MEM_R_W)
-        return result
+    def setZGyroOffset(self, offset):
+        self.i2c.writeBits(self.MPU6050_RA_ZG_OFFS_TC, self.MPU6050_TC_OFFSET_BIT, self.MPU6050_TC_OFFSET_LENGTH, offset)        
+        
+    def getXFineGain(self):
+        pass
+        
+    def setXFineGain(self, gain):
+        pass
+        
+    def getYFineGain(self):
+        pass
+     
+    def setYFineGain(self, gain):
+        pass
+     
+    def getZFineGain(self):
+        pass
+     
+    def setZFineGain(self, gain):
+        pass
     
-    def getIntStatus(self):
-        result = self.i2c.readU8(self.MPU6050_RA_INT_STATUS)
-        return result
-    
-    def resetI2CMaster(self):
-        self.i2c.writeBit(self.MPU6050_RA_USER_CTRL, self.MPU6050_USERCTRL_I2C_MST_RESET_BIT, True)
-    
-    def setI2CBypassEnabled(self, status):
-        self.i2c.writeBit(self.MPU6050_RA_INT_PIN_CFG, self.MPU6050_INTCFG_I2C_BYPASS_EN_BIT, status)
-    
+    def getXAccelOffset(self):
+        pass
+
+    def setXAccelOffset(self, offset):
+        pass
+
+    def getYAccelOffset(self):
+        pass
+
+    def setYAccelOffset(self, offset):
+        pass
+
+    def getZAccelOffset(self):
+        pass
+
+    def setZAccelOffset(self, offset):
+        pass
+
+    def getXGyroOffsetUser(self):
+        pass
+        
+    def setXGyroOffsetUser(self, value):
+        self.i2c.write8(self.MPU6050_RA_XG_OFFS_USRH, value >> 8)
+        self.i2c.write8(self.MPU6050_RA_XG_OFFS_USRL, value & 0xFF) 
+        return True        
+        
+    def getYGyroOffsetUser(self):
+        pass
+        
+    def setYGyroOffsetUser(self, value):
+        self.i2c.write8(self.MPU6050_RA_YG_OFFS_USRH, value >> 8)
+        self.i2c.write8(self.MPU6050_RA_YG_OFFS_USRL, value & 0xFF) 
+        return True        
+        
+    def getZGyroOffsetUser(self):
+        pass
+        
+    def setZGyroOffsetUser(self, value):
+        self.i2c.write8(self.MPU6050_RA_ZG_OFFS_USRH, value >> 8)
+        self.i2c.write8(self.MPU6050_RA_ZG_OFFS_USRL, value & 0xFF) 
+        return True        
+
+    def getIntPLLReadyEnabled(self):
+        pass
+     
+    def setIntPLLReadyEnabled(self, enabled):
+        pass
+     
+    def getIntDMPEnabled(self):
+        pass
+     
+    def setIntDMPEnabled(self, enabled):
+        pass
+        
+    def getDMPInt5Status(self):
+        pass
+        
+    def getDMPInt4Status(self):
+        pass
+        
+    def getDMPInt3Status(self):
+        pass
+        
+    def getDMPInt2Status(self):
+        pass
+        
+    def getDMPInt1Status(self):
+        pass
+        
+    def getDMPInt0Status(self):
+        pass
+        
+    def getIntPLLReadyStatus(self):
+        pass
+        
+    def getIntDMPStatus(self):
+        pass
+        
     def getDMPEnabled(self):
         result = self.i2c.readBit(self.MPU6050_RA_USER_CTRL, self.MPU6050_USERCTRL_DMP_EN_BIT)
         return result
-    
+
     def setDMPEnabled(self, status):
         self.i2c.writeBit(self.MPU6050_RA_USER_CTRL, self.MPU6050_USERCTRL_DMP_EN_BIT, status)
     
     def resetDMP(self):
         self.i2c.writeBit(self.MPU6050_RA_USER_CTRL, self.MPU6050_USERCTRL_DMP_RESET_BIT, True)
-    
+        
     def setMemoryBank(self, bank, prefetchEnabled = False, userBank = False):
         bank &= 0x1F
         
@@ -792,11 +1355,21 @@ class MPU6050:
             bank |= 0x40
             
         self.i2c.write8(self.MPU6050_RA_BANK_SEL, bank)
-        return True
-    
+        return True        
+        
     def setMemoryStartAddress(self, address):
-        self.i2c.write8(self.MPU6050_RA_MEM_START_ADDR, address)
-    
+        self.i2c.write8(self.MPU6050_RA_MEM_START_ADDR, address)       
+        
+    def readMemoryByte(self):
+        result = self.i2c.readU8(self.MPU6050_RA_MEM_R_W)
+        return result
+
+    def writeMemoryByte(self, data):
+        pass
+
+    def readMemoryBlock(self):
+        pass
+
     def writeMemoryBlock(self, data, dataSize, bank = 0, address = 0, verify = False):
         self.setMemoryBank(bank)
         self.setMemoryStartAddress(address)
@@ -829,7 +1402,10 @@ class MPU6050:
 
             # increase byte index
             i += 1
-    
+
+    def writeProgMemoryBlock(self):
+        pass
+
     def writeDMPConfigurationSet(self, data, dataSize, bank = 0, address = 0, verify = False):
         # config set data is a long string of blocks with the following structure:
         # [bank] [offset] [length] [byte[0], byte[1], ..., byte[length]]
@@ -858,10 +1434,31 @@ class MPU6050:
                     #setIntZeroMotionEnabled(true);
                     #setIntFIFOBufferOverflowEnabled(true);
                     #setIntDMPEnabled(true);
-                    self.i2c.write8(self.MPU6050_RA_INT_ENABLE, 0x32);  # single operation            
+                    self.i2c.write8(self.MPU6050_RA_INT_ENABLE, 0x32);  # single operation  
+
+    def writeProgDMPConfigurationSet(self):
+        pass
+        
+    def getDMPConfig1(self):
+        pass
+        
+    def setDMPConfig1(self, config):
+        self.i2c.write8(self.MPU6050_RA_DMP_CFG_1, config)        
+        
+    def getDMPConfig2(self):
+        pass
+
+    def setDMPConfig2(self, config):
+        self.i2c.write8(self.MPU6050_RA_DMP_CFG_2, config)
+
+    def dmpPacketAvailable(self):
+        return self.getFIFOCount() >= self.dmpGetFIFOPacketSize()
     
     def dmpGetFIFOPacketSize(self):
-        return self.dmpPacketSize
+        return self.dmpPacketSize    
+    
+    def dmpGetAccel(self):
+        pass
     
     def dmpGetQuaternion(self, packet):
         # We are dealing with signed bytes
@@ -883,19 +1480,28 @@ class MPU6050:
             'y' : ((packet[8] << 8) + packet[9]) / 16384.0,
             'z' : ((packet[12] << 8) + packet[13]) / 16384.0}        
         
-        return data
+        return data    
     
-    def dmpGetEuler(self, q):
+    def dmpGetGyro(self):
         pass
     
+    def dmpGetLinearAccel(self):
+        pass
+    
+    def dmpGetLinearAccelInWorld(self):
+        pass
+        
     def dmpGetGravity(self, q):
         data = {
             'x' : float(2 * (q['x'] * q['z'] - q['w'] * q['y'])),
             'y' : float(2 * (q['w'] * q['x'] + q['y'] * q['z'])),
             'z' : float(q['w'] * q['w'] - q['x'] * q['x'] - q['y'] * q['y'] + q['z'] + q['z'])}
         
-        return data
-    
+        return data 
+
+    def dmpGetEuler(self, q):
+        pass 
+
     def dmpGetYawPitchRoll(self, q, g):
         data = {
             # yaw: (about Z axis)
@@ -905,8 +1511,14 @@ class MPU6050:
             # roll: (tilt left/right, about X axis)
             'roll' : atan(g['y'] / sqrt(g['x'] * g['x'] + g['z'] * g['z']))}
             
-        return data
- 
+        return data 
+
+    def dmpProcessFIFOPacket(self):
+        pass
+        
+    def dmpReadAndProcessFIFOPacket(self):
+        pass
+
     def dmpInitialize(self):
         # Resetting MPU6050
         self.reset()
@@ -932,9 +1544,9 @@ class MPU6050:
         """    
         
         # get X/Y/Z gyro offsets
-        xgOffset = self.readGyroOffsetX()
-        ygOffset = self.readGyroOffsetY()
-        zgOffset = self.readGyroOffsetZ()
+        xgOffset = self.getXGyroOffset()
+        ygOffset = self.getYGyroOffset()
+        zgOffset = self.getZGyroOffset()
         
         # Enable pass through mode
         self.setI2CBypassEnabled(True)
@@ -973,9 +1585,9 @@ class MPU6050:
         self.setOTPBankValid(False)
         
         # Setting X/Y/Z gyro offsets to previous values
-        self.setXGyroOffset(xgOffset);
-        self.setYGyroOffset(ygOffset);
-        self.setZGyroOffset(zgOffset);   
+        #self.setXGyroOffset(xgOffset);
+        #self.setYGyroOffset(ygOffset);
+        #self.setZGyroOffset(zgOffset);   
         
         # Setting X/Y/Z gyro user offsets to zero
         self.setXGyroOffsetUser(0)
