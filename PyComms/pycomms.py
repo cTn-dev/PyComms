@@ -14,7 +14,6 @@ pass
 # ===========================================================================
 
 class PyComms:
-
     def __init__(self, address, bus = smbus.SMBus(0)):
         self.address = address
         self.bus = bus
@@ -46,6 +45,21 @@ class PyComms:
             
         return self.write8(reg, b)
     
+    def readBits(self, reg, bitStart, length):
+        # 01101001 read byte
+        # 76543210 bit numbers
+        #    xxx   args: bitStart=4, length=3
+        #    010   masked
+        #   -> 010 shifted  
+        
+        b = self.readU8(reg)
+        mask = ((1 << length) - 1) << (bitStart - length + 1)
+        b &= mask
+        b >>= (bitStart - length + 1)
+        
+        return b
+        
+    
     def writeBits(self, reg, bitStart, length, data):
         #      010 value to write
         # 76543210 bit numbers
@@ -54,6 +68,7 @@ class PyComms:
         # 10101111 original value (sample)
         # 10100011 original & ~mask
         # 10101011 masked | value
+        
         b = self.readU8(reg)
         mask = ((1 << length) - 1) << (bitStart - length + 1)
         data <<= (bitStart - length + 1)
@@ -62,7 +77,7 @@ class PyComms:
         b |= data
             
         return self.write8(reg, b)
-    
+
     def readBytes(self, reg, length):
         output = []
         
@@ -71,7 +86,35 @@ class PyComms:
             output.append(self.readU8(reg))
             i += 1
             
+        return output        
+        
+    def readBytesListU(self, reg, length):
+        output = []
+        
+        i = 0
+        while i < length:
+            output.append(self.readU8(reg + i))
+            i += 1
+            
         return output
+
+    def readBytesListS(self, reg, length):
+        output = []
+        
+        i = 0
+        while i < length:
+            output.append(self.readS8(reg + i))
+            i += 1
+            
+        return output        
+    
+    def writeList(self, reg, list):
+        # Writes an array of bytes using I2C format"
+        try:
+            self.bus.write_i2c_block_data(self.address, reg, list)
+        except (IOError):
+            print ("Error accessing 0x%02X: Check your I2C address" % self.address)
+        return -1    
     
     def write8(self, reg, value):
         # Writes an 8-bit value to the specified register/address
@@ -80,14 +123,6 @@ class PyComms:
         except (IOError):
             print ("Error accessing 0x%02X: Check your I2C address" % self.address)
             return -1
-
-    def writeList(self, reg, list):
-        # Writes an array of bytes using I2C format"
-        try:
-            self.bus.write_i2c_block_data(self.address, reg, list)
-        except (IOError):
-            print ("Error accessing 0x%02X: Check your I2C address" % self.address)
-        return -1
 
     def readU8(self, reg):
         # Read an unsigned byte from the I2C device
