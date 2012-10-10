@@ -598,18 +598,13 @@ class MPU6050:
         return self.getDeviceID() == 0x34
     
     def getAuxVDDIOLevel(self):
-        result = self.i2c.readBit(self.MPU6050_RA_YG_OFFS_TC, self.MPU6050_TC_PWR_MODE_BIT)
-        return result
+        return self.i2c.readBit(self.MPU6050_RA_YG_OFFS_TC, self.MPU6050_TC_PWR_MODE_BIT)
         
     def setAuxVDDIOLevel(self, value):
         pass
-      
-    def readAccelOffsetX(self):
-        result = self.i2c.readS16(self.MPU6050_RA_XA_OFFS_H)
-        return result
     
     def getRate(self):
-        pass
+        return self.i2c.readU8(self.MPU6050_RA_SMPLRT_DIV)
         
     def setRate(self, value):
         self.i2c.write8(self.MPU6050_RA_SMPLRT_DIV, value)
@@ -1495,7 +1490,7 @@ class MPU6050:
         data = {
             'x' : float(2 * (q['x'] * q['z'] - q['w'] * q['y'])),
             'y' : float(2 * (q['w'] * q['x'] + q['y'] * q['z'])),
-            'z' : float(q['w'] * q['w'] - q['x'] * q['x'] - q['y'] * q['y'] + q['z'] + q['z'])}
+            'z' : float(q['w'] * q['w'] - q['x'] * q['x'] - q['y'] * q['y'] + q['z'] * q['z'])}
         
         return data 
 
